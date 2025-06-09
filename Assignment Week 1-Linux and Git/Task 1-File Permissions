@@ -1,0 +1,13 @@
+# Task 1: File Permissions
+
+## Description
+Create a file named `aryan.txt`, assign permissions (read, write, execute) to different user categories (owner, group, others), and practice changing permissions using `chmod`.
+
+---
+
+## Instructions
+
+### 1. Create the File
+```sh
+touch aryan.txt
+![1.1](https://drive.google.com/file/d/184IlKvUDVKhVNEXIIQF_3m6hbLMGPiBa/view?usp=drive_link)
