@@ -8,8 +8,53 @@ Create a file named `aryan.txt`, assign permissions (read, write, execute) to di
 ## Instructions
 
 ### 1. Create the File
-```sh
+```bash
 touch aryan.txt
+```
 
-![image](https://github.com/user-attachments/assets/e1bf9ef8-771a-429f-9128-a14b8369dd85)
-![Image](https://github.com/user-attachments/assets/2b1c039f-64ed-4a76-80c1-40c329585b6b)
+---
+
+### 2. Assign Permissions
+Set the following permissions:
+
+- **Owner (User):** Read, write, execute (`rwx`)
+- **Group:** Read, execute (`r-x`)
+- **Others:** Read only (`r--`)
+
+**Numeric Mode: `754`**
+
+- `7` (Owner): `r` (4) + `w` (2) + `x` (1) = 7  
+- `5` (Group): `r` (4) + `-` (0) + `x` (1) = 5  
+- `4` (Others): `r` (4) + `-` (0) + `-` (0) = 4
+
+Apply the permissions using:
+```bash
+chmod 754 aryan.txt
+```
+
+---
+
+### 3. Verify Permissions
+Use the following command to check:
+```bash
+ls -l aryan.txt
+```
+
+**Example output:**
+```
+-rwxr-xr--. 1 root root 0 May 23 14:50 aryan.txt
+```
+
+**Breakdown of `-rwxr-xr--`:**
+
+- `-` : File type (regular file)  
+- `rwx` : Owner permissions (read, write, execute)  
+- `r-x` : Group permissions (read, execute)  
+- `r--` : Others permissions (read)
+
+---
+
+## Resources
+
+- [YouTube: Understanding File Permissions](https://www.youtube.com/watch?v=iwolPf6kN-k)  
+- [Pluralsight: Linux File Permissions](https://www.pluralsight.com/blog/it-ops/linux-file-permissions)
