@@ -48,23 +48,40 @@ Replace `<public-ip-address>` with the VM's actual IP from Azure.
 1. In the Azure portal, go to **"Virtual Machines"** → click **"Create"** → **"Azure virtual machine"**.
 2. Fill in the **Basic Details**:
    * VM Name: `windows-vm01`
-   * Image: `Windows Server 2022 Datacenter`
+   * Image: `Windows Server 2025 Datacenter`
+   
+      ![image](https://github.com/user-attachments/assets/9a32f34a-1612-4465-acdd-08711f5c4337)
+
    * Size: e.g., `Standard B1ms`
    * Authentication: Username + Password
 3. Allow **RDP (port 3389)** under inbound port rules.
-4. Click **"Review + create"**, then **"Create"**.
+
+   ![image](https://github.com/user-attachments/assets/ae58db03-3580-4098-8ed5-dedfe65b12d3)
+
+5. Click **"Review + create"**, then **"Create"**.
 
 ## Access Windows VM Using RDP
 
 Once deployed:
 1. Copy the **Public IP address** of the VM.
-2. Open **Remote Desktop Connection** (on your local machine):
+
+   ![image](https://github.com/user-attachments/assets/9cf1a72a-73de-434c-bc0a-1fa608605c9e)
+
+3. Open **Remote Desktop Connection** (on your local machine):
    * Paste the IP address
+
+      ![image](https://github.com/user-attachments/assets/b4403051-2e8f-4511-b217-b64f16dd9490)
+
    * Click Connect → Enter the credentials
+
+      ![image](https://github.com/user-attachments/assets/cdf86f54-8278-4d45-a87c-cd3b81509f83)
+       
 3. You should be able to access the Windows VM's desktop interface.
 
+   ![image](https://github.com/user-attachments/assets/3905245a-02d9-43b8-9b83-4e90e64f6cd8)
+
 ## Resources:
-* Deploy a Linux VM in Azure
-* Deploy a Windows VM in Azure
-* How to SSH into Azure Linux VM
-* Connect to Windows VM using RDP
+- [Deploy a Linux VM in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal)
+- [Deploy a Windows VM in Azure](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/quick-create-portal)
+- [How to SSH into Azure Linux VM](https://learn.microsoft.com/en-us/azure/virtual-machines/linux/ssh-from-windows)
+- [Connect to Windows VM using RDP](https://learn.microsoft.com/en-us/azure/virtual-machines/windows/connect-logon)
