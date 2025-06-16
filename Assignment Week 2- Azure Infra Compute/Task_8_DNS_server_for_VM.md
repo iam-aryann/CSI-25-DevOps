@@ -77,7 +77,7 @@ Purchase or configure a custom domain and use Azure DNS to map it to a Virtual M
 
 ---
 
-## 🧩 Resources
+## Resources
 - [Microsoft Azure Private Link Deep Dive
 ](https://www.youtube.com/watch?v=57ZwdztCx2w)
 - [Azure DNS Documentation](https://docs.microsoft.com/azure/dns/)
