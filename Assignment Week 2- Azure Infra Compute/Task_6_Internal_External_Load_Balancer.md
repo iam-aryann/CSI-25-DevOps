@@ -111,7 +111,7 @@
 
 ---
 
-## 🧩 Resources
+## Resources
 - [Azure Load Balancer Documentation](https://docs.microsoft.com/azure/load-balancer/)
 - [Azure Load Balancer Tutorial
 ](https://www.youtube.com/watch?v=T7XU6Lz8lJw&pp=ygUbYXp1cmUgbG9hZCBiYWxhbmNlciBzZXJ2aWNl)
