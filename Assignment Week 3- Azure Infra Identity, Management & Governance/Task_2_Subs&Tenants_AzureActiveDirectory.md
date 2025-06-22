@@ -1,120 +1,129 @@
-# Task 1: Subscription, Azure Entra ID, Users, Groups, RBAC Roles, and Custom Roles
+# Task 2: Azure Entra ID Setup, User & Group Management, RBAC & Custom Roles
 
 **Objective**:  
-Observe Azure subscriptions, explore Azure Entra ID, create test users and groups, assign built-in Role-Based Access Control (RBAC) roles, and create and assign a custom role for permission testing.
+Set up or observe Azure Entra ID, create users and groups, assign built-in RBAC roles, and create and assign a custom role for permission management, using the Azure Portal unless specified otherwise.
 
 ---
 
 ## Step 1: Observe Assigned Subscriptions
-1. Go to [Azure Portal](https://portal.azure.com).
-2. Navigate to **Home** → **Subscriptions**.
-3. Note down:
+1. Go to [Azure Portal](https://portal.azure.com) → **Subscriptions**.
+2. Review:
    - **Subscription Name**
    - **Subscription ID**
-   - **Directory (Tenant) ID**
-   - **Billing details** (if available)
+   - **Directory/Tenant ID**
+   - **Billing settings** and Owner/Contributor roles (optional)
 
 ---
 
-## Step 2: Azure Entra ID Overview or Setup
-1. Navigate to **Home** → **Azure Entra ID** (formerly Azure Active Directory).
-2. If using a personal Azure account:
-   - A default Entra ID tenant is already created. View and manage it here.
-3. To create a new Entra tenant (if needed):
-   - Go to **Azure Entra ID** → **Manage Tenants** → Click **+ Create**.
-   - Select **Azure Active Directory**.
-   - Fill in:
-     - **Organization Name**
-     - **Initial Domain Name**
-     - **Region**
-   - Click **Create**.
+## Step 2: Observe or Create Azure Entra ID
+
+### To Observe
+1. Navigate to **Home** → **Azure Entra ID**.
+2. Explore:
+   - **Overview**: Tenant ID, Primary Domain, License, Users
+   - **Users**, **Groups**, **Roles**, and **Enterprise Apps**
+
+### To Create Your Own (If not present)
+1. Navigate to **Azure Entra ID** → **Manage tenants** → Click **+ Create**.
+2. Select **Azure Active Directory**.
+3. Configure:
+   - **Org Name**: `DevOrg`
+   - **Initial Domain**: `devorg.onmicrosoft.com`
+   - **Region**: Your current location
+4. Click **Review + Create** → **Create**.
 
 ---
 
 ## Step 3: Create Test Users and Groups
 
-### Create Test Users
+### Create Users
 1. Go to **Azure Entra ID** → **Users** → Click **+ New User**.
-2. Configure:
-   - **Username**: `testuser1`
+2. Select **Create New User**.
+3. Configure:
+   - **User name**: `test.user1`
    - **Name**: `Test User 1`
-   - **Password**: Auto-generated or custom
-3. Repeat to create additional users (e.g., `testuser2`, `devuser1`).
-4. Save each user.
+   - **Password**: Auto-generate or set manually
+4. Click **Create**.
+5. Repeat for additional users (e.g., `test.user2`).
 
 ### Create a Group
-1. Go to **Azure Entra ID** → **Groups** → Click **+ New Group**.
+1. Navigate to **Azure Entra ID** → **Groups** → Click **+ New Group**.
 2. Configure:
-   - **Group Type**: Security
-   - **Group Name**: `Test-Group`
-   - **Members**: Add the test users created above (e.g., `testuser1`, `testuser2`)
+   - **Group type**: Security
+   - **Group name**: `Dev-Team`
+   - **Members**: Add previously created users (e.g., `test.user1`, `test.user2`)
 3. Click **Create**.
 
 ---
 
-## Step 4: Assign a Built-in RBAC Role to a User
-1. Navigate to a resource (e.g., a **Resource Group** or **Storage Account**).
-2. Go to **Access Control (IAM)** → Click **+ Add** → **Add Role Assignment**.
+## Step 4: Assign a Built-in RBAC Role to User
+
+### Example: Assign Reader Role
+1. Go to a resource group (e.g., `RG-Demo`).
+2. Navigate to **Access Control (IAM)** → **Role assignments** → Click **+ Add** → **Add role assignment**.
 3. Configure:
-   - **Role**: `Reader` (or another built-in role)
-   - **Assign access to**: User
-   - **Select**: `testuser1`
+   - **Role**: `Reader`
+   - **Assign to**: User
+   - **Select**: `test.user1`
 4. Click **Save**.
-5. Test access:
-   - Log in to [Azure Portal](https://portal.azure.com) using `testuser1` credentials.
-   - Verify access is read-only for the assigned resource.
+
+### Test
+1. Log in to [Azure Portal](https://portal.azure.com) as `test.user1`.
+2. Navigate to the assigned resource group.
+3. Verify read-only access (can view but cannot edit or delete resources).
 
 ---
 
-## Step 5: Create a Custom Role and Assign It
+## Step 5: Create and Assign a Custom Role
 
-### Define Permissions
-1. Navigate to **Subscriptions** → **Access Control (IAM)** → Click **+ Add** → **Add Custom Role**.
+### Create Custom Role
+1. Go to **Subscriptions** → **Access Control (IAM)** → **Roles** → Click **+ Add** → **Add Custom Role**.
 2. Configure:
-   - **Role Name**: `Custom-Read-Monitor`
-   - **Description**: Custom role with limited read and monitor permissions
-   - **Base Role**: Start from Scratch or clone an existing role (e.g., `Reader`)
-3. Set permissions (edit JSON):
+   - **Choose**: Start from Scratch
+   - **Name**: `Monitor-Only`
+   - **Description**: Custom role for viewing only monitor-related settings
+3. Define permissions (edit JSON):
    ```json
    {
      "actions": [
-       "Microsoft.Resources/subscriptions/resourceGroups/read",
-       "Microsoft.Compute/virtualMachines/read",
-       "Microsoft.Insights/metrics/read"
+       "Microsoft.Insights/metrics/read",
+       "Microsoft.Insights/logs/read",
+       "Microsoft.Resources/subscriptions/resourceGroups/read"
      ],
      "notActions": [],
      "dataActions": [],
      "notDataActions": []
    }
    ```
-4. Save the custom role.
+4. Click **Next** → **Assignable Scopes** → **+ Add** → Select the subscription.
+5. Click **Review + Create** → **Create**.
 
-### Assign Role
-1. Go to the target resource or resource group → **Access Control (IAM)** → Click **+ Add** → **Add Role Assignment**.
+### Assign the Role
+1. Go to a VM or Resource Group → **Access Control (IAM)** → Click **+ Add** → **Add Role Assignment**.
 2. Configure:
-   - **Role**: `Custom-Read-Monitor`
-   - **Assign access to**: User
-   - **Select**: `testuser2`
+   - **Role**: `Monitor-Only`
+   - **Assign to**: User
+   - **Select**: `test.user2`
 3. Click **Save**.
 
-### Test Custom Role Access
-1. Log in to [Azure Portal](https://portal.azure.com) as `testuser2`.
-2. Verify limited access:
-   - Can view resource groups, virtual machines, and metrics.
-   - Cannot delete or update resources.
+### Test
+1. Log in to [Azure Portal](https://portal.azure.com) as `test.user2`.
+2. Verify access:
+   - Can view metrics, logs, and resource groups.
+   - Cannot perform other actions (e.g., edit or delete resources).
 
 ---
 
 ## Outcome
-- Subscription and tenant settings reviewed.
-- Azure Entra ID observed or created.
-- Test users and groups successfully created.
-- Built-in RBAC role assigned and validated.
-- Custom role defined, assigned, and tested for restricted access.
+- Subscription and Azure Entra ID understood or set up.
+- Test users and groups successfully created and managed.
+- Built-in RBAC role (`Reader`) assigned and validated.
+- Custom RBAC role (`Monitor-Only`) created and tested.
 
 ---
 
 ## Resources
-- [Microsoft Learn – Azure CLI Overview](https://learn.microsoft.com/azure/cli/)
-- [YouTube: Azure Subscriptions Explained](https://www.youtube.com/results?search_query=azure+subscriptions+explained)
+- [Azure Active Directory | Microsoft Azure Tutorial for Beginners | Azure 70-533 Training | Edureka
+](https://www.youtube.com/watch?v=OQwQmikCLs4)
+- [Microsoft Learn – Azure Role-Based Access Control](https://learn.microsoft.com/azure/role-based-access-control/)
 - [Azure Entra ID Documentation](https://learn.microsoft.com/azure/active-directory/)
