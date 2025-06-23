@@ -114,6 +114,6 @@ Replace `CLI-LinuxVM` with `CLI-WindowsVM` if you created a Windows VM.
 
 ---
 
-## 📚 Resources
+## Resources
 - [Microsoft Docs – Azure CLI VM Quickstart](https://learn.microsoft.com/azure/virtual-machines/linux/quick-create-cli)
 - [AZ CLI Overview and Demo Super Show](https://www.youtube.com/watch?v=DOywwse_j8I)
