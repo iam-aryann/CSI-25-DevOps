@@ -1,4 +1,3 @@
-# Week 5: Kubernetes
 ## Task 2: Create a Kubernetes Cluster Using Kubeadm
 
 **Objective**:  
