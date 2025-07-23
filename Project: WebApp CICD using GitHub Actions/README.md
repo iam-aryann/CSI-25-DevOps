@@ -221,12 +221,31 @@ This workflow outlines the process to build a containerized Java application (e.
 ```
 pharma-webapp/
 ├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/example/pharmawebapp/
+│   │   │       ├── PharmaWebAppApplication.java
+│   │   │       └── controllers/
+│   │   │           └── HomeController.java
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── templates/
+│   │           └── index.html
+│   └── test/
+│       └── java/
+│           └── com/example/pharmawebapp/
+│               └── PharmaWebAppApplicationTests.java
+│
+├── .github/
+│   └── workflows/
+│       ├── azure-webapp.yml
+│       └── docker-deploy.yml (optional)
+│
+├── Dockerfile (optional)
+├── mvnw
+├── mvnw.cmd
 ├── pom.xml
-├── Dockerfile
-├── README.md
-└── .github/
-    └── workflows/
-        └── azure-webapp.yml
+└── README.md
 ```
 
 ---
