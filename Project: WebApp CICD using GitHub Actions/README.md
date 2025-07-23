@@ -117,3 +117,138 @@ jobs:
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: target/*.war
 
+# Workflow 2: Container Build & Deploy via GitHub Container Registry (GHCR)
+
+This workflow outlines the process to build a containerized Java application (e.g., a Spring Boot app) and deploy it to an Azure Web App using GitHub Actions and GitHub Container Registry (GHCR).
+
+---
+
+## Steps to Implement
+
+### 1. Create GitHub Actions Workflow
+1. Create a file named `.github/workflows/azure-webapp.yml` in your repository:
+   ```yaml
+   name: Build Container & Deploy to Azure Web App (Container)
+
+   on:
+     push:
+       branches: [ "main" ]
+
+   env:
+     IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/pharma-webapp
+
+   jobs:
+     build-push-deploy:
+       runs-on: ubuntu-latest
+       permissions:
+         contents: read
+         packages: write
+         id-token: write
+
+       steps:
+         - name: Checkout
+           uses: actions/checkout@v3
+
+         - name: Log in to GHCR
+           uses: docker/login-action@v3
+           with:
+             registry: ghcr.io
+             username: ${{ github.repository_owner }}
+             password: ${{ secrets.GITHUB_TOKEN }}
+
+         - name: Build and Push Image
+           uses: docker/build-push-action@v5
+           with:
+             context: .
+             push: true
+             tags: ${{ env.IMAGE_NAME }}:latest
+
+         - name: Deploy Container to Azure Web App
+           uses: azure/webapps-deploy@v2
+           with:
+             app-name: YOUR_WEBAPP_NAME
+             publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+             images: ${{ env.IMAGE_NAME }}:latest
+   ```
+   - Replace `YOUR_WEBAPP_NAME` with your Azure Web App name.
+   - Ensure `AZURE_WEBAPP_PUBLISH_PROFILE` is added as a secret in your GitHub repository settings.
+
+---
+
+### 2. Local Build Test (Optional)
+1. Test the application locally before pushing:
+   ```bash
+   mvn clean package
+   docker build -t pharma-webapp .
+   docker run -p 8080:8080 pharma-webapp
+   ```
+2. Verify the app in a browser at `http://localhost:8080`.
+
+---
+
+### 3. Azure App Service Setup
+1. Go to the [Azure Portal](https://portal.azure.com) and create a Web App:
+   - **Publish**: Select **Docker Container**.
+   - **Runtime Stack**: Choose **Java 17** and **Java SE** (for JAR) or **Tomcat** (for WAR).
+   - **Region**: Select your preferred region.
+   - **Pricing Plan**: Choose an appropriate plan (e.g., Free F1 for testing).
+2. Configure the **Startup Command** (if needed for your container, e.g., `java -jar app.jar` for Java SE).
+3. Download the **Publish Profile** from the Web App’s **Overview** page and add it as a GitHub secret (`AZURE_WEBAPP_PUBLISH_PROFILE`).
+
+---
+
+### 4. Monitoring & Logging
+1. After deployment:
+   - Enable **Application Insights** in the Azure Web App for metrics, failure tracking, and performance monitoring.
+   - Use **Log Stream** in the Azure Web App portal to view live container logs.
+   - Configure alerts for failed deployments or availability issues under **Monitoring** > **Alerts**.
+
+---
+
+### 5. Push Code and Verify
+1. Commit and push the workflow file and application code to the `main` branch:
+   ```bash
+   git add .
+   git commit -m "Add GitHub Actions workflow for container build and deploy"
+   git push origin main
+   ```
+2. Monitor the build in **Actions** tab of your GitHub repository.
+3. Verify the app is accessible at the Azure Web App URL (e.g., `https://<your-webapp-name>.azurewebsites.net`).
+
+---
+
+## Repository Structure
+```
+pharma-webapp/
+├── src/
+├── pom.xml
+├── Dockerfile
+├── README.md
+└── .github/
+    └── workflows/
+        └── azure-webapp.yml
+```
+
+---
+
+## Deliverables Checklist
+| **Item** | **Done (✔)** |
+|----------|--------------|
+| GitHub repo created and source pushed | ✔ |
+| Azure Web App provisioned | ✔ |
+| Secrets added in GitHub | ✔ |
+| GitHub Actions workflow committed | ✔ |
+| Successful build run observed | ✔ |
+| App reachable at Azure Web App URL | ✔ |
+| Monitoring configured (optional) | ✔ |
+
+---
+
+##  Summary
+This workflow automates the build and push of a containerized Java application to GHCR and deploys it to an Azure Web App. It ensures seamless CI/CD, with monitoring via Application Insights and logs for debugging.
+
+---
+
+## Resources
+- [Azure Docs: Deploy to App Service from GitHub Actions](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions)
+- [Medium: Deploy Spring Boot Java App to Azure Web App using GitHub Actions](https://medium.com/@kharvingaraj1/deploying-a-spring-boot-java-application-to-azure-app-service-using-github-actions-9d03405380bf)
